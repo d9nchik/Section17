@@ -12,7 +12,7 @@ public class Main {
             loans[i] = new Loan();
         try (ObjectOutputStream output = new ObjectOutputStream(new BufferedOutputStream(
                 new FileOutputStream("Exercise17_06.dat")))) {
-            output.writeObject(loans);
+            for (Loan loan : loans) output.writeObject(loan);
         } catch (IOException ex) {
             System.out.println("Problem with opening file");
         }
