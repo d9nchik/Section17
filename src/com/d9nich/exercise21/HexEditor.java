@@ -1,4 +1,4 @@
-package com.d9nich.exercise20;
+package com.d9nich.exercise21;
 
 import javafx.application.Application;
 import javafx.geometry.Pos;
@@ -13,9 +13,9 @@ import javafx.stage.Stage;
 
 import java.io.*;
 
-import static com.d9nich.exercise18.GetBytes.getBits;
+import static com.d9nich.exercise19.HexReader.getHex;
 
-public class BinaryEditor extends Application {
+public class HexEditor extends Application {
 
     public static void main(String[] args) {
         launch(args);
@@ -26,7 +26,7 @@ public class BinaryEditor extends Application {
             StringBuilder text = new StringBuilder();
             int v;
             while ((v = inputStream.read()) != -1)
-                text.append(getBits(v));
+                text.append(getHex(v));
             textArea.setText(text.toString());
         } catch (FileNotFoundException ex) {
             System.out.println("File not found");
@@ -38,8 +38,8 @@ public class BinaryEditor extends Application {
     private static void saveText(TextField textField, TextArea textArea) {
         try (BufferedOutputStream outputStream = new BufferedOutputStream(new FileOutputStream(textField.getText()))) {
             String text = textArea.getText();
-            for (int i = 0; i < text.length(); i += 8)
-                outputStream.write(eightBitToInt(text.substring(i, Math.min((i + 8), text.length()))));
+            for (int i = 0; i < text.length(); i += 2)
+                outputStream.write(twoHexToInt(text.substring(i, Math.min((i + 2), text.length()))));
         } catch (FileNotFoundException ex) {
             System.out.println("File not found");
         } catch (IOException ex) {
@@ -47,16 +47,17 @@ public class BinaryEditor extends Application {
         }
     }
 
-    private static int eightBitToInt(String eightBit) {
-        if (eightBit.length() != 8)
-            System.out.println("Not 8");
-        int byteValue = 0;
-        for (int i = 0; i < eightBit.length(); i++) {
-            byteValue = byteValue << 1;
-            if (eightBit.charAt(i) == '1')
-                byteValue++;
+    private static int twoHexToInt(String eightBit) {
+        return hexToInt(eightBit.charAt(0)) * 16 + hexToInt(eightBit.charAt(1));
+    }
+
+    private static int hexToInt(char hex) {
+        if (hex <= '9' && hex >= '0') {
+            return hex - '0';
+        } else if (hex <= 'F' && hex >= 'A') {
+            return hex - 'A' + 10;
         }
-        return byteValue;
+        return 0;
     }
 
     @Override
@@ -78,7 +79,7 @@ public class BinaryEditor extends Application {
 
         Scene scene = new Scene(pane);
         primaryStage.setScene(scene);
-        primaryStage.setTitle("Exercise 20");
+        primaryStage.setTitle("Exercise 21");
         primaryStage.show();
 
         textField.setOnAction(e -> setTextArea(textField, textArea));

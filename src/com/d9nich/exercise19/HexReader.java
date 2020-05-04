@@ -34,8 +34,11 @@ public class HexReader {
     private static char getSymbolOfHex(String bytes) {
         if (bytes.matches("[01]{4}")) {
             int number = 0;
-            for (int i = 3; i >= 0; i--)
-                number += Math.pow(2, i + 1) * (bytes.charAt(i) - '0');
+            for (int i = 0; i < 4; i++) {
+                number = number << 1;
+                if (bytes.charAt(i) == '1')
+                    number++;
+            }
             if (number < 10)
                 return ((char) (number + '0'));
             else

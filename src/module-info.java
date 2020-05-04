@@ -6,4 +6,5 @@ module Section {
     opens com.d9nich.exercise11;
     opens com.d9nich.exercise13;
     opens com.d9nich.exercise20;
+    opens com.d9nich.exercise21;
 }

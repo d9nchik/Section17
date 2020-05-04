@@ -5,7 +5,7 @@ import java.util.InputMismatchException;
 
 public class BitOutputStream {
     private final static byte AMOUNT_OF_BITS = 8;
-    private BufferedOutputStream outputStream;
+    private final BufferedOutputStream outputStream;
     private int bits = 0;
     private byte freeBits = AMOUNT_OF_BITS;
 
